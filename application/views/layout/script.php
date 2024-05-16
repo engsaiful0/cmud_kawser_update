@@ -52,3 +52,6 @@
 		min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
 	});
 </script>
+ <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/autocomplete_js.js"></script>

@@ -1,4 +1,4 @@
-0<?php
+<?php
 $currency_symbol = $global_config['currency_symbol'];
 $widget = (is_superadmin_loggedin() ? 3 : 4);
 $branchID = $student['branch_id'];
@@ -8,6 +8,7 @@ if (empty($student['previous_details'])) {
 } else {
 	$previous_details = json_decode($student['previous_details'], true);
 }
+
 ?>
 <div class="row appear-animation" data-appear-animation="<?=$global_config['animations'] ?>" data-appear-animation-delay="100">
 	<div class="row">
@@ -94,7 +95,7 @@ if (empty($student['previous_details'])) {
 							<i class="fas fa-school"></i> <?=translate('academic_details')?>
 						</div>
 						<div class="row">
-							<div class="col-md-3 mb-sm">
+							<div style="display: none;" class="col-md-3 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('academic_year')?> <span class="required">*</span></label>
 									<?php
@@ -110,22 +111,22 @@ if (empty($student['previous_details'])) {
 								</div>
 							</div>
 
-							<div class="col-md-3 mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
-									<label class="control-label"><?=translate('register_no')?> <span class="required">*</span></label>
+									<label class="control-label"><?=translate('form_serial_no')?> <span class="required">*</span></label>
 									<input type="text" class="form-control" name="register_no" value="<?=set_value('register_no', $student['register_no'])?>" />
 									<span class="error"><?=form_error('register_no')?></span>
 								</div>
 							</div>
 
-							<div class="col-md-3 mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
-									<label class="control-label"><?=translate('roll')?></label>
+									<label class="control-label"><?=translate('student_id_no')?></label>
 									<input type="text" class="form-control" name="roll" value="<?=set_value('roll', $student['roll'])?>" />
 									<span class="error"><?=form_error('roll')?></span>
 								</div>
 							</div>
-							<div class="col-md-3 mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('admission_date')?> <span class="required">*</span></label>
 									<div class="input-group">
@@ -140,7 +141,7 @@ if (empty($student['previous_details'])) {
 
 						<div class="row mb-md">
 							<?php if (is_superadmin_loggedin()): ?>
-							<div class="col-md-<?php echo $widget; ?> mb-sm">
+							<div style="display: none;" class="col-md-<?php echo $widget; ?> mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('branch')?> <span class="required">*</span></label>
 									<?php
@@ -152,9 +153,9 @@ if (empty($student['previous_details'])) {
 								</div>
 							</div>
 							<?php endif; ?>
-							<div class="col-md-<?php echo $widget; ?> mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
-									<label class="control-label"><?=translate('class')?> <span class="required">*</span></label>
+									<label class="control-label"><?=translate('batch')?> <span class="required">*</span></label>
 									<?php
 										$arrayClass = $this->app_lib->getClass($branchID);
 										echo form_dropdown("class_id", $arrayClass, set_value('class_id', $student['class_id']), "class='form-control' id='class_id' 
@@ -163,18 +164,39 @@ if (empty($student['previous_details'])) {
 									<span class="error"><?=form_error('class_id')?></span>
 								</div>
 							</div>
-							<div class="col-md-<?php echo $widget; ?> mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
-									<label class="control-label"><?=translate('section')?> <span class="required">*</span></label>
+									<label class="control-label">
+Offline/Online * <span class="required">*</span></label>
+									
+									<select  name="is_online_offline" class='form-control' id='is_online_offline'
+										data-plugin-selectTwo data-width='100%'>
+										<option <?= $student['is_online_offline']=='Online'?"selected":""?>>Online</option>
+										<option <?= $student['is_online_offline']=='Offline'?"selected":""?>>Offline</option>
+									</select>
+								
+									<span class="error"><?=form_error('is_online_offline')?></span>
+								</div>
+							</div>
+
+
+							<div style="display:none;" class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label">
+Offline/Online * <span class="required">*</span></label>
 									<?php
-										$arraySection = $this->app_lib->getSections(set_value('class_id', $student['class_id']), true);
+										$arraySection = array(
+											'Online' => translate('Online'),
+											'Offline' => translate('Offline')
+										);
 										echo form_dropdown("section_id", $arraySection, set_value('section_id', $student['section_id']), "class='form-control' id='section_id'
 										data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 									?>
+									
 									<span class="error"><?=form_error('section_id')?></span>
 								</div>
 							</div>
-							<div class="col-md-<?php echo $widget; ?> mb-sm">
+							<div style="display:none;"> class="col-md-<?php echo $widget; ?> mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('category')?> <span class="required">*</span></label>
 									<?php
@@ -183,6 +205,23 @@ if (empty($student['previous_details'])) {
 										data-plugin-selectTwo data-width='100%' id='category_id' data-minimum-results-for-search='Infinity' ");
 									?>
 									<span class="error"><?=form_error('category_id')?></span>
+								</div>
+							</div>
+							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label"><?= translate('course_or_program') ?> <span class="required">*</span></label>
+									<select name="subjects" class="form-control" data-plugin-selectTwo id='subject_holder' data-width="100%">
+										<?php
+									
+											$subjects = $this->db->get_where('subject', array('branch_id' => $branchID))->result();
+											foreach ($subjects as $subject) :
+										?>
+												<option <?php echo $student['subject_id']==$subject->id?"selected":''?> value="<?= $subject->id ?>" <?= set_select('subjects[]', $subject->id) ?>><?= html_escape($subject->name) ?></option>
+										<?php endforeach;		?>
+										
+									</select>
+									<span class="error"></span>
+									<span class="error"></span>
 								</div>
 							</div>
 						</div>
@@ -195,7 +234,7 @@ if (empty($student['previous_details'])) {
 						<div class="row">
 							<div class="col-md-4 mb-sm">
 								<div class="form-group">
-									<label class="control-label"><?=translate('first_name')?> <span class="required">*</span></label>
+									<label class="control-label"><?= translate('name') ?> <span class="required">*</span></label>
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fas fa-user-graduate"></i></span>
 										<input type="text" class="form-control" name="first_name" value="<?=set_value('first_name', $student['first_name'])?>"/>
@@ -203,7 +242,7 @@ if (empty($student['previous_details'])) {
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 mb-sm">
+							<div  style="display: none;" class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('last_name')?> <span class="required">*</span> </label>
 									<div class="input-group">
@@ -218,18 +257,16 @@ if (empty($student['previous_details'])) {
 									<label class="control-label"><?=translate('gender')?> </label>
 									<?php
 										$arrayGender = array(
-											'male' => translate('male'),
-											'female' => translate('female')
+											'Male' => translate('Male'),
+											'Female' => translate('Female')
 										);
 										echo form_dropdown("gender", $arrayGender, set_value('gender', $student['gender']), "class='form-control'
 										data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 									?>
 								</div>
 							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-md-6 mb-sm">
+					
+							<div style="display: none;" class="col-md-6 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('blood_group')?></label>
 									<?php
@@ -239,7 +276,7 @@ if (empty($student['previous_details'])) {
 									?>
 								</div>
 							</div>
-							<div class="col-md-6 mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('birthday')?></label>
 									<div class="input-group">
@@ -250,9 +287,38 @@ if (empty($student['previous_details'])) {
 								</div>
 							</div>
 						</div>
-
-						<div class="row">
+							<div class="row">
 							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label"><?= translate('father_name') ?></label>
+									<input type="text" class="form-control" name="father_name" value="<?=set_value('father_name', $student['father_name'])?>" />
+									<span class="error"></span>
+								</div>
+							</div>
+
+
+							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label"><?= translate('mother_name') ?></label>
+									<input type="text" class="form-control" name="mother_name" value="<?=set_value('mother_name', $student['mother_name'])?>" />
+									<span class="error"></span>
+								</div>
+							</div>
+							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label">Spouse Name</label>
+									<div class="input-group">
+										<span class="input-group-addon"></span>
+										<input type="text" class="form-control" name="spouse_name" value="<?=set_value('spouse_name', $student['spouse_name'])?>" />
+										<span class="error"></span>
+									</div>
+								</div>
+								<span class="error"><?= form_error('spouse_name') ?></span>
+							</div>
+						</div>
+
+						<div  class="row">
+							<div style="display: none;" class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('mother_tongue')?></label>
 									<input type="text" class="form-control" name="mother_tongue" value="<?=set_value('mother_tongue', $student['mother_tongue'])?>" />
@@ -264,16 +330,14 @@ if (empty($student['previous_details'])) {
 									<input type="text" class="form-control" name="religion" value="<?=set_value('religion', $student['religion'])?>" />
 								</div>
 							</div>
-							<div class="col-md-4 mb-sm">
+							<div style="display: none;" class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('caste')?></label>
 									<input type="text" class="form-control" name="caste" value="<?=set_value('caste', $student['caste'])?>" />
 								</div>
 							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-md-3 mb-sm">
+					
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('mobile_no')?> <span class="required">*</span></label>
 									<div class="input-group">
@@ -283,7 +347,7 @@ if (empty($student['previous_details'])) {
 									<span class="error"><?=form_error('mobileno')?></span>
 								</div>
 							</div>
-							<div class="col-md-3 mb-sm">
+							<div class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('email')?></label>
 									<div class="input-group">
@@ -293,19 +357,40 @@ if (empty($student['previous_details'])) {
 									<span class="error"><?=form_error('email')?></span>
 								</div>
 							</div>
-							<div class="col-md-3 mb-sm">
+							<div style="display: none;" class="col-md-3 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('city')?></label>
 									<input type="text" class="form-control" name="city" value="<?=set_value('city', $student['city'])?>" />
 								</div>
 							</div>
-							<div class="col-md-3 mb-sm">
+							<div style="display: none;" class="col-md-3 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('state')?></label>
 									<input type="text" class="form-control" name="state" value="<?=set_value('state', $student['state'])?>" />
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label">NID No/Birth Certificate</label>
+									<input type="text"  class="form-control" name="nid_number" value="<?=set_value('nid_number', $student['nid_number'])?>" />
+									<span class="error"></span>
+								</div>
+							</div>
+							<div class="col-md-4 mb-sm">
+										<div class="form-group">
+											<label class="control-label">Marital Status</label>
+											<select name="marital_status" id="marital_status" class='form-control' >
+												<option <?= $student['marital_status']=='Married'?"selected":""?>>Married</option>
+												<option <?= $student['marital_status']=='Unmarried'?"selected":""?>>Unmarried</option>
+											</select>
+											
+											<span class="error"></span>
+										</div>
+									</div>
+						</div>
+
 
 						<div class="row">
 							<div class="col-md-6 mb-sm">
@@ -339,11 +424,11 @@ if (empty($student['previous_details'])) {
 						</div>
 
 						<!-- login details -->
-						<div class="headers-line mt-md">
+						<div style="display: none;"  class="headers-line mt-md">
 							<i class="fas fa-user-lock"></i> <?=translate('login_details')?>
 						</div>
 
-						<div class="row mb-md">
+						<div style="display: none;"  class="row mb-md">
 							<div class="col-md-12 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('username')?> <span class="required">*</span></label>
@@ -357,10 +442,10 @@ if (empty($student['previous_details'])) {
 						</div>
 
 						<!--guardian details-->
-						<div class="headers-line">
+						<div style="display: none;"  class="headers-line">
 							<i class="fas fa-user-tie"></i> <?=translate('guardian_details')?>
 						</div>
-						<div class="row mb-md">
+						<div style="display: none;"  class="row mb-md">
 							<div class="col-md-12 mb-md">
 								<label class="control-label"><?=translate('guardian')?> <span class="required">*</span></label>
 								<div class="form-group">
@@ -375,17 +460,17 @@ if (empty($student['previous_details'])) {
 						</div>
 
 						<!-- transport details -->
-						<div class="headers-line">
+						<div style="display: none;"  class="headers-line">
 							<i class="fas fa-bus-alt"></i> <?=translate('transport_details')?>
 						</div>
 
-						<div class="row mb-md">
+						<div style="display: none;"  class="row mb-md">
 							<div class="col-md-6 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('transport_route')?></label>
 									<?php
 										$arrayRoute = $this->app_lib->getSelectByBranch('transport_route', $branchID);
-										echo form_dropdown("route_id", $arrayRoute, set_value('route_id', $student['route_id']), "class='form-control' id='route_id'
+										echo form_dropdown("route_id", $arrayRoute, set_value('route_id', $student['route_id']), "class='form-control'7777777777777/ id='route_id'
 										data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 									?>
 								</div>
@@ -403,11 +488,11 @@ if (empty($student['previous_details'])) {
 						</div>
 
 						<!-- hostel details -->
-						<div class="headers-line">
+						<div style="display: none;"  class="headers-line">
 							<i class="fas fa-hotel"></i> <?=translate('hostel_details')?>
 						</div>
 
-						<div class="row mb-md">
+						<div style="display: none;"  class="row mb-md">
 							<div class="col-md-6 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?=translate('hostel_name')?></label>
@@ -435,27 +520,150 @@ if (empty($student['previous_details'])) {
 							<i class="fas fa-bezier-curve"></i> <?=translate('previous_school_details')?>
 						</div>
 						<div class="row">
-							<div class="col-md-6 mb-sm">
-								<div class="form-group">
-									<label class="control-label"><?=translate('school_name')?></label>
-									<input type="text" class="form-control" name="school_name" value="<?=set_value('school_name', $previous_details['school_name'])?>" />
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Name of Medical College</label>
+										<?php
+										$medical_colleges = $this->db->select('*')->get('medical_colleges')->result();
+										?>
+										<select class="form-control" data-plugin-selecttwo  data-plugin-selecttwo  name="name_of_medical_college">
+											<option value="">Select Medical College</option>
+											<?php
+											foreach ($medical_colleges as $medical_college) {
+											?>
+												<option <?php echo  $student['name_of_medical_college']== $medical_college->id?"selected":"" ?>  value="<?php echo $medical_college->id ?>"><?php echo $medical_college->name ?></option>
+											<?php
+											}
+											?>
+										</select>
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Batch</label>
+										<select class="form-control" data-plugin-selecttwo  data-plugin-selecttwo  name="batch">
+											<option value="">Select Batch</option>
+											<option <?= $student['batch'] == '1st' ? 'selected' : '' ?> >1st</option>
+											<option <?= $student['batch'] == '2nd' ? 'selected' : '' ?> >2nd</option>
+											<option <?= $student['batch'] == '3rd' ? 'selected' : '' ?> ">3rd</option>
+											<?php
+											for ($value = 4; $value <= 100; $value++) {
+    ?>
+    <option <?= $student['batch'] == $value.'th' ? 'selected' : '' ?>><?php echo $value.'th'?></option>
+    <?php
+}
+
+											?>
+
+										</select>
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Year of Admission into Medical College</label>
+										<select class="form-control" data-plugin-selecttwo  data-plugin-selecttwo  name="year_of_admission_into_medical_college">
+											<option value="">Select Year of Admission</option>
+											<?php
+											$currentYear = date("Y");
+											$currentYear = date('Y');
+for ($year = 1980; $year <= $currentYear; $year++) {
+    echo '<option value="' . $year . '" ' . ($student['year_of_admission_into_medical_college'] == $year ? 'selected' : '') . '>' . $year . '</option>';
+}
+
+											?>
+										</select>
+										<span class="error"></span>
+									</div>
+								</div>
+
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Year of Passing SSC</label>
+										<select class="form-control" data-plugin-selecttwo  name="year_of_passing_ssc">
+											<option value="">Select Passing Year</option>
+											<?php
+											$currentYear = date("Y");
+											for ($year = 1980; $year <= $currentYear; $year++) {
+												echo '<option value="' . $year . '" ' .($student['year_of_passing_ssc'] == $year ? 'selected' : '') . '>' . $year . '</option>';
+											}
+											?>
+										</select>
+
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Year of Passing HSC</label>
+										<select class="form-control" data-plugin-selecttwo  data-plugin-selecttwo  name="year_of_passing_hsc">
+											<option value="">Select Passing Year</option>
+											<?php
+											$currentYear = date("Y");
+											for ($year = 1980; $year <= $currentYear; $year++) {
+												echo '<option value="' . $year . '" '  .($student['year_of_passing_hsc'] == $year ? 'selected' : '') . '>' . $year . '</option>';
+											}
+											?>
+										</select>
+
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Year of Passing Final Prof</label>
+										<select class="form-control" data-plugin-selecttwo  name="year_of_passing_final_prof">
+											<option value="">Select Passing Year</option>
+											<?php
+											$currentYear = date("Y");
+											for ($year = 1980; $year <= $currentYear; $year++) {
+												echo '<option value="' . $year . '" '  .($student['year_of_passing_final_prof'] == $year ? 'selected' : '') . '>' . $year . '</option>';
+											}
+											?>
+										</select>
+
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">One Year Internship Training</label>
+										<input type="text"  class="form-control" name="one_year_internship_training" value="<?=set_value('one_year_internship_training', $student['one_year_internship_training'])?>" />
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">BMDC No </label>
+										<input type="text"  class="form-control" value="<?=set_value('bmdc_reg_no', $student['bmdc_reg_no'])?>" name="bmdc_reg_no" value="<?= set_value('bmdc_reg_no') ?>" />
+										<span class="error"></span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label">Valid Upto</label>
+										<input type="date"  class="form-control" name="valid_upto" value="<?=set_value('valid_upto', $student['valid_upto'])?>"
+										<span class="error"></span>
+									</div>
+								</div>
+
+								<div style="display: none;" class="col-md-4 mb-sm">
+									<div class="form-group">
+										<label class="control-label"><?= translate('qualification') ?></label>
+										<input type="text" class="form-control" name="qualification" value="<?=set_value('qualification', $student['qualification'])?>" />
+										<span class="error"></span>
+									</div>
 								</div>
 							</div>
-							<div class="col-md-6 mb-sm">
-								<div class="form-group">
-									<label class="control-label"><?=translate('qualification')?></label>
-									<input type="text" class="form-control" name="qualification" value="<?=set_value('qualification', $previous_details['qualification'])?>" />
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="control-label"><?= translate('remarks') ?></label>
+										<textarea name="previous_remarks" rows="2" class="form-control"><?=set_value('previous_remarks', $student['previous_remarks'])?></textarea>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row mb-lg">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label class="control-label"><?=translate('remarks')?></label>
-									<textarea name="previous_remarks" rows="2" class="form-control"><?=set_value('previous_remarks', $previous_details['remarks'])?></textarea>
-								</div>
-							</div>
-						</div>
 					</div>
 					
 					<div class="panel-footer">
@@ -485,28 +693,28 @@ if (empty($student['previous_details'])) {
 								<thead>
 									<tr class="text-dark">
 										<th>#</th>
-										<th><?=translate("fees_type")?></th>
-										<th><?=translate("due_date")?></th>
-										<th><?=translate("status")?></th>
-										<th><?=translate("amount")?></th>
-										<th><?=translate("discount")?></th>
-										<th><?=translate("fine")?></th>
-										<th><?=translate("paid")?></th>
-										<th><?=translate("balance")?></th>
+										<th><?= translate("fees_type") ?></th>
+
+										<th><?= translate("status") ?></th>
+										<th><?= translate("amount") ?></th>
+										<th><?= translate("discount") ?></th>
+										<th><?= translate("fine") ?></th>
+										<th><?= translate("paid") ?></th>
+										<th><?= translate("balance") ?></th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
-										$count = 1;
-										$total_fine = 0;
-										$total_discount = 0;
-										$total_paid = 0;
-										$total_balance = 0;
-										$total_amount = 0;
-										$allocations = $this->fees_model->getInvoiceDetails($student['id']);
-										if (!empty($allocations)) {
+									$count = 1;
+									$total_fine = 0;
+									$total_discount = 0;
+									$total_paid = 0;
+									$total_balance = 0;
+									$total_amount = 0;
+									$allocations = $this->fees_model->getInvoiceDetails($student['id']);
+									if (!empty($allocations)) {
 										foreach ($allocations as $fee) {
-											$deposit = $this->fees_model->getStudentFeeDeposit($fee['allocation_id'], $fee['fee_type_id']);
+											$deposit = $this->fees_model->getStudentFeeDeposit($student['id'], '');
 											$type_discount = $deposit['total_discount'];
 											$type_fine = $deposit['total_fine'];
 											$type_amount = $deposit['total_amount'];
@@ -516,41 +724,42 @@ if (empty($student['previous_details'])) {
 											$total_paid += $type_amount;
 											$total_balance += $balance;
 											$total_amount += $fee['amount'];
-			
-										?>
-									<tr>
-										<td><?php echo $count++;?></td>
-										<td><?=$fee['name']?></td>
-										<td><?=_d($fee['due_date'])?></td>
-										<td><?php 
-											$status = 0;
-											$labelmode = '';
-											if($type_amount == 0) {
-												$status = translate('unpaid');
-												$labelmode = 'label-danger-custom';
-											} elseif($balance == 0) {
-												$status = translate('total_paid');
-												$labelmode = 'label-success-custom';
-											} else {
-												$status = translate('partly_paid');
-												$labelmode = 'label-info-custom';
-											}
-											echo "<span class='label ".$labelmode." '>".$status."</span>";
-										?></td>
-										<td><?php echo $currency_symbol . $fee['amount'];?></td>
-										<td><?php echo $currency_symbol . $type_discount;?></td>
-										<td><?php echo $currency_symbol . $type_fine;?></td>
-										<td><?php echo $currency_symbol . $type_amount;?></td>
-										<td><?php echo $currency_symbol . number_format($balance, 2, '.', '');?></td>
-									</tr>
-									<?php } } else { 
+
+									?>
+											<tr>
+												<td><?php echo $count++; ?></td>
+												<td><?= $fee['name'] ?></td>
+
+												<td><?php
+													$status = 0;
+													$labelmode = '';
+													if ($type_amount == 0) {
+														$status = translate('unpaid');
+														$labelmode = 'label-danger-custom';
+													} elseif ($balance == 0) {
+														$status = translate('total_paid');
+														$labelmode = 'label-success-custom';
+													} else {
+														$status = translate('partly_paid');
+														$labelmode = 'label-info-custom';
+													}
+													echo "<span class='label " . $labelmode . " '>" . $status . "</span>";
+													?></td>
+												<td><?php echo $currency_symbol . $fee['amount']; ?></td>
+												<td><?php echo $currency_symbol . $type_discount; ?></td>
+												<td><?php echo $currency_symbol . $type_fine; ?></td>
+												<td><?php echo $currency_symbol . $type_amount; ?></td>
+												<td><?php echo $currency_symbol . number_format($balance, 2, '.', ''); ?></td>
+											</tr>
+									<?php }
+									} else {
 										echo '<tr><td colspan="9"><h5 class="text-danger text-center">' . translate('no_information_available') . '</td></tr>';
 									} ?>
 								</tbody>
 								<tfoot>
 									<tr class="text-dark">
 										<th></th>
-										<th></th>
+
 										<th></th>
 										<th></th>
 										<th><?php echo $currency_symbol . number_format($total_amount, 2, '.', ''); ?></th>

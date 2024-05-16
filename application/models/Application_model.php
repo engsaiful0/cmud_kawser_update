@@ -86,11 +86,16 @@ class Application_model extends CI_Model
         }
     }
 
-    public function getStudentListByClassSection($classID = '', $sectionID = '', $branchID = '', $deactivate = false, $rollOrder = false)
+    public function getStudentListByClassSection($classID = '', $sectionID = '', $branchID = '',$student_id='', $deactivate = false, $rollOrder = false)
     {
-        $sql = "SELECT `s`.`id` as `student_id`,`s`.`id`, `s`.`photo`, CONCAT_WS(' ', `s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `c`.`name` as `class_name` FROM `student` as `s` LEFT JOIN `class` as `c` ON `s`.`class_id` = `c`.`id` WHERE `s`.`class_id` = " . $this->db->escape($classID) . " AND `s`.`branch_id` = " . $this->db->escape($branchID) . " AND `s`.`session_id` = " . $this->db->escape(get_session_id());
+          $sql ='';
+        if($student_id!='')
+        {
+             $sql = "SELECT `s`.`id` as `student_id`,`sub`.`name` as `subject_name`,`s`.`is_online_offline` as `is_online_offline`,`s`.`roll` as `roll`,`s`.`id`, `s`.`photo`, CONCAT_WS(' ', `s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `c`.`name` as `class_name` FROM `student` as `s` LEFT JOIN `class` as `c` ON `s`.`class_id` = `c`.`id` LEFT JOIN `subject` as `sub` ON `s`.`subject_id` = `sub`.`id` WHERE `s`.`id` = " . $this->db->escape($student_id) . " AND `s`.`branch_id` = " . $this->db->escape($branchID) . " AND `s`.`session_id` = " . $this->db->escape(get_session_id());
+        }else{
+        $sql = "SELECT `s`.`id` as `student_id`,`sub`.`name` as `subject_name`,`s`.`is_online_offline` as `is_online_offline`,`s`.`roll` as `roll`,`s`.`id`, `s`.`photo`, CONCAT_WS(' ', `s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `c`.`name` as `class_name` FROM `student` as `s` LEFT JOIN `class` as `c` ON `s`.`class_id` = `c`.`id` LEFT JOIN `subject` as `sub` ON `s`.`subject_id` = `sub`.`id` WHERE `s`.`class_id` = " . $this->db->escape($classID) . " AND `s`.`branch_id` = " . $this->db->escape($branchID) . " AND `s`.`session_id` = " . $this->db->escape(get_session_id());
 
-     
+     }
         if ($deactivate == true) {
             $sql .= " AND `l`.`active` = 0";
         }
@@ -101,6 +106,28 @@ class Application_model extends CI_Model
         }
       
         return $this->db->query($sql)->result_array();
+    }
+     public function getStudentListById($roll='',$branchID='',$deactivate = false, $rollOrder = false)
+    {
+          $sql ='';
+        if($roll!='')
+        {
+             $sql = "SELECT `s`.`id` as `student_id`,`sub`.`name` as `subject_name`,`s`.`is_online_offline` as `is_online_offline`,`s`.`roll` as `roll`,`s`.`id`, `s`.`photo`, CONCAT_WS(' ', `s`.`first_name`, `s`.`last_name`) as `fullname`, `s`.`register_no`, `s`.`email`, `s`.`mobileno`, `s`.`blood_group`, `s`.`birthday`, `s`.`admission_date`, `c`.`name` as `class_name` FROM `student` as `s` LEFT JOIN `class` as `c` ON `s`.`class_id` = `c`.`id` LEFT JOIN `subject` as `sub` ON `s`.`subject_id` = `sub`.`id` WHERE `s`.`roll` = " . $this->db->escape($roll);
+                 if ($deactivate == true) {
+            $sql .= " AND `l`.`active` = 0";
+        }
+        if ($rollOrder == true) {
+            $sql .= " ORDER BY `s`.`register_no` ASC";
+        } else {
+            $sql .= " ORDER BY `s`.`id` ASC";
+        }
+      
+        return $this->db->query($sql)->result_array();
+        }else
+        {
+            return;
+        }
+    
     }
 
     public function getStudentDetails($id)

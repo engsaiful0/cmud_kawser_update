@@ -279,6 +279,11 @@
                                             <span><i class="fas fa-caret-right" aria-hidden="true"></i><?= translate('student_list') ?></span>
                                         </a>
                                     </li>
+                                    <li class="<?php if ($sub_page == 'student/view' || $sub_page == 'student/profile') echo 'nav-active'; ?>">
+                                        <a href="<?= base_url('student/view_by_id') ?>">
+                                            <span><i class="fas fa-caret-right" aria-hidden="true"></i><?= translate('student_By_ID') ?></span>
+                                        </a>
+                                    </li>
                                 <?php }
                                 if (get_permission('student_disable_authentication', 'is_view')) { ?>
                                     <li style="display: none;" class="<?php if ($sub_page == 'student/disable_authentication') echo 'nav-active'; ?>">

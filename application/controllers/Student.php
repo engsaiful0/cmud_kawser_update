@@ -441,8 +441,10 @@ class Student extends Admin_Controller
         $branchID = $this->application_model->get_branch_id();
         if (isset($_POST['search'])) {
             $classID = $this->input->post('class_id');
+            $student_id = $this->input->post('student_id');
+            
             $sectionID = '';
-            $this->data['students'] = $this->application_model->getStudentListByClassSection($classID, $sectionID, $branchID, false, true);
+            $this->data['students'] = $this->application_model->getStudentListByClassSection($classID, $sectionID, $branchID,$student_id, false, true);
         }
         $this->data['branch_id'] = $branchID;
         $this->data['title'] = translate('student_list');
@@ -509,6 +511,8 @@ class Student extends Admin_Controller
         $this->data['title'] = translate('student_profile');
         $this->data['sub_page'] = 'student/profile';
         $this->data['main_menu'] = 'student';
+        $this->data['branch_id'] = $this->application_model->get_branch_id();
+        
         $this->data['headerelements'] = array(
             'css' => array(
                 'vendor/dropify/css/dropify.min.css',
@@ -802,7 +806,63 @@ class Student extends Admin_Controller
             return false;
         }
     }
+     public function roll_load()
+    {
+        $parameter = $_POST['parameter'];
+       
+        if(!empty($parameter)) {
+            // Query with condition
+           $this->db->select('')
+                     ->like('roll', $parameter)
+                     ->from('student');
+        } else {
+            // Query without condition
+            $this->db->select('')
+                     ->from('student');
+        }
+        $sql = $this->db->get()->result();
+        $data_roll = array();
+        foreach ($sql as $value) {
+            array_push($data_roll, $value->roll);
+        }
+       echo json_encode($data_roll);
+    }
+   public function duplicateRollCheck()
+{
+    $roll = $this->input->post('roll');
+    
+    // Query to check for duplicate roll
+    $this->db->select('*');
+    $this->db->from('student');
+    $this->db->where('roll', $roll);
+    $query = $this->db->get();
+    
+    // Check if any rows are returned
+    if ($query->num_rows() > 0) {
+        // Roll already exists
+        echo 'duplicate';
+    } else {
+        // Roll is unique
+        echo 'unique';
+    }
+}
 
+  public function view_by_id()
+    {
+        // check access permission
+        if (!get_permission('student', 'is_view')) {
+            access_denied();
+        }
+
+        $roll = $this->input->post('roll');
+        $branchID = $this->application_model->get_branch_id();
+         $this->data['students'] = $this->application_model->getStudentListById($roll,$branchID, false, true);
+        $this->data['title'] = translate('student_by_id');
+        $this->data['branch_id'] = $branchID;
+        $this->data['sub_page'] = 'student/view_by_id';
+        $this->data['main_menu'] = '';
+        $this->load->view('layout/index', $this->data);
+    }
     public function search()
     {
         // check access permission
@@ -877,6 +937,7 @@ class Student extends Admin_Controller
 
     public function bulk_delete()
     {
+
         $status = 'success';
         $message = translate('information_deleted');
         if (get_permission('student', 'is_delete')) {

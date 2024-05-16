@@ -1,4 +1,29 @@
 <?php  $widget = (is_superadmin_loggedin() ? 4 : 6); ?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#roll").autocomplete({
+            source: function(request, response) {
+               $.ajax({
+		    url: base_url + "student/roll_load",
+		    data: {
+		        parameter: request.term,
+		        <?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'
+		    },
+		    type: "POST",
+		    dataType: "JSON",
+		    success: function(data) {
+		        response(data);
+		    }
+		});
+
+            },
+            select: function(event, ui) {
+                $('#roll').val(ui.item.label);
+                return false;
+            }
+        });
+    });
+</script>
 <div class="row">
 	<div class="col-md-12">
 		<section class="panel">
@@ -9,35 +34,13 @@
 			<div class="panel-body">
 				<div class="row mb-sm">
 				<?php if (is_superadmin_loggedin() ): ?>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label"><?=translate('branch')?> <span class="required">*</span></label>
-							<?php
-								$arrayBranch = $this->app_lib->getSelectList('branch');
-								echo form_dropdown("branch_id", $arrayBranch, set_value('branch_id'), "class='form-control' id='branch_id' onchange='getClassByBranch(this.value)'
-								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity'");
-							?>
-						</div>
-					</div>
+				
 				<?php endif; ?>
-					<div class="col-md-<?php echo $widget; ?> mb-sm">
-						<div class="form-group">
-							<label class="control-label"><?=translate('batch')?> <span class="required">*</span></label>
-							<?php
-							$arrayClass = $this->app_lib->getClass($branch_id);
-							echo form_dropdown("class_id", $arrayClass, set_value('class_id'), "class='form-control' id='class_id' onchange='getStudentByBatch(this.value)'
-								required data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
-							?>
-						</div>
-					</div>
+					
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
-							<label class="control-label">Student</label>
-							<?php
-							$arrayClass = $this->app_lib->getClass($branch_id);
-							echo form_dropdown("student_id", '', set_value('student_id'), "class='form-control' data-plugin-selectTwo id='student_id_show' 
-								 data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
-							?>
+							<label class="control-label">Student ID</label>
+							<input placeholder="Type student ID.." type="text" name="roll" id="roll" class="form-control">
 						</div>
 					</div>
 					
@@ -77,8 +80,7 @@
 							<th class="no-sort"><?=translate('photo')?></th>
 							<th><?=translate('name')?></th>
 							<th>Batch</th>
-					
-							<th>Online/Offline</th>
+					<th>Online/Offline</th>
 							<th><?=translate('student_id')?></th>
 						
 							<th><?=translate('subject_name')?></th>
@@ -111,7 +113,7 @@
 							<td class="center"><img src="<?php echo get_image_url('student', $row['photo']); ?>" height="50"></td>
 							<td ><?php echo $row['fullname'];?></td>
 							<td><?php echo $row['class_name'];?></td>
-								<td><?php echo $row['is_online_offline'];?></td>
+							<td><?php echo $row['is_online_offline'];?></td>
 							<td><?php echo $row['roll'];?></td>
 							<td><?php echo $row['subject_name'];?></td>
 							<td>
@@ -257,7 +259,7 @@
 							url: base_url + "student/bulk_delete",
 							type: "POST",
 							dataType: "JSON",
-							data: { array_id :   },
+							data: { array_id : arrayID },
 							success:function(data) {
 								swal({
 								title: "<?php echo translate('deleted')?>",

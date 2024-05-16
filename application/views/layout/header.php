@@ -31,6 +31,7 @@
 	?>
 	<!-- ramom css -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/ramom.css');?>">
+	 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
 	<?php if ($theme_config["border_mode"] == 'false'): ?>
 		<link rel="stylesheet" href="<?php echo base_url('assets/css/skins/square-borders.css');?>">
 	<?php endif; ?>

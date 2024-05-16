@@ -1,6 +1,37 @@
 <?php $widget = (is_superadmin_loggedin() ? 3 : 4); 
 error_reporting(0);
 ?>
+<script type="text/javascript">
+   
+ 
+function duplicateRollCheck(roll) {
+    $.ajax({
+        url:  base_url + "student/duplicateRollCheck",
+        method: 'POST',
+        data: {roll: roll, <?php echo $this->security->get_csrf_token_name(); ?>: '<?php echo $this->security->get_csrf_hash(); ?>'},
+        success: function(response) {
+            // Handle the response from the server
+            if (response === 'duplicate') {
+                // If duplicate roll is found, display an error message
+                $('.roll_error').text('Student Id already exists! Try again.');
+                $('#roll').val("");
+                $('#roll').focus();
+
+            } else {
+                // If roll is unique, clear any previous error message
+                $('.roll_error').text('The Student Id is available.');
+
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle errors if any
+            console.error('Error:', error);
+        }
+    });
+}
+
+</script>
+
 <?php if (is_superadmin_loggedin()) : ?>
 	<section class="panel">
 		<header class="panel-heading">
@@ -86,8 +117,8 @@ if (!empty($branch_id)) :
 								<div class="col-md-4 mb-sm">
 									<div class="form-group">
 										<label class="control-label">Student ID No <span class="required">*</span></label>
-										<input type="text" class="form-control" name="roll" value="<?= set_value('roll') ?>" />
-										<span class="error"></span>
+										<input placeholder="Enter unique Student Id" onkeyup="duplicateRollCheck(this.value)" type="text" class="form-control" id="roll" name="roll" value="<?= set_value('roll') ?>" />
+										<span class="roll_error"></span>
 									</div>
 								</div>
 							<?php }
@@ -124,13 +155,27 @@ if (!empty($branch_id)) :
 									<span class="error"></span>
 								</div>
 							</div>
-							<div  class="col-md-4 mb-sm">
+							<div class="col-md-4 mb-sm">
+								<div class="form-group">
+									<label class="control-label">
+Offline/Online * <span class="required">*</span></label>
+									
+									<select  name="is_online_offline" class='form-control' id='is_online_offline'
+										data-plugin-selectTwo data-width='100%'>
+										<option >Online</option>
+										<option >Offline</option>
+									</select>
+								
+									<span class="error"><?=form_error('is_online_offline')?></span>
+								</div>
+							</div>
+							<div style="display:none;"  class="col-md-4 mb-sm">
 								<div class="form-group">
 									<label class="control-label"><?= translate('offline_or_online') ?> <span class="required">*</span></label>
 									<?php
 										$arraySection = array(
-											'online' => translate('Online'),
-											'offline' => translate('Offline')
+											'Online' => translate('Online'),
+											'Offline' => translate('Offline')
 										);
 									echo form_dropdown("section_id", $arraySection, set_value('section_id'), "class='form-control' id='' 
 								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
@@ -252,7 +297,7 @@ if (!empty($branch_id)) :
 								<div class="form-group">
 									<label class="control-label">Spouse Name</label>
 									<div class="input-group">
-										<span class="input-group-addon"><i class="fas fa-user-graduate"></i></span>
+										<span class="input-group-addon"></span>
 										<input type="text" class="form-control" name="spouse_name" value="<?= set_value('spouse_name') ?>" />
 										<span class="error"></span>
 									</div>

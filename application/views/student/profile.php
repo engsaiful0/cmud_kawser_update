@@ -15,57 +15,70 @@ if (empty($student['previous_details'])) {
 	<div class="col-md-4 col-lg-4 col-xl-3">
 		<div class="image-content-center user-pro">
 			<div class="preview">
-				<img src="<?php echo get_image_url('student', $student['photo']); ?>">
+				<img style="height:200px;" src="<?php echo get_image_url('student', $student['photo']); ?>">
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4 col-lg-5 col-xl-5">
+	<div class="col-md-8 col-lg-8 col-xl-8">
 		<table class="table table-hover table-bordered">
 			<tr>
 				<td style="font-weight: bold;">Name</td>
 				<td><?= $student['first_name'] . ' ' . $student['last_name'] ?></td>
-				<td style="font-weight: bold;">Gender</td>
-				<td><?= $student['gender'] ?></td>
+					<td style="font-weight: bold;">Father Name</td>
+				<td><?= (!empty($student['father_name']) ? $student['father_name'] : 'N/A'); ?></td>
 				
 			</tr>
 			<tr>
-				<td style="font-weight: bold;">Father Name</td>
-				<td><?= (!empty($student['father_name']) ? $student['father_name'] : 'N/A'); ?></td>
+				<td style="font-weight: bold;">Gender</td>
+				<td><?= $student['gender'] ?></td>
+				<td style="font-weight: bold;">Mother Name</td>
+				<td><?= (!empty($student['mother_name']) ? $student['mother_name'] : 'N/A'); ?></td>
+			</tr>
+			
+			
+			<tr >
+				<td  style="font-weight: bold;">Student ID</td>
+				<td style="font-weight: bold;"><?= (!empty($student['roll']) ? $student['roll'] : 'N/A'); ?></td>
+				<td style="font-weight: bold;">Birth Day</td>
+				<td><?= _d($student['birthday']) ?></td>
+				
+				
+			</tr>
+			<tr>
+			<td style="font-weight: bold;">Online/Offline</td>
+				<td><?= (!empty($student['is_online_offline']) ? $student['is_online_offline'] : 'N/A'); ?></td>
 				<td style="font-weight: bold;">NID Number</td>
 				<td><?= (!empty($student['nid_number']) ? $student['nid_number'] : 'N/A'); ?></td>
 			</tr>
 			<tr>
-				<td style="font-weight: bold;">Mother Name</td>
-				<td><?= (!empty($student['mother_name']) ? $student['mother_name'] : 'N/A'); ?></td>
 				<td style="font-weight: bold;">BMDC Reg No</td>
 				<td><?= (!empty($student['bmdc_reg_no']) ? $student['bmdc_reg_no'] : 'N/A'); ?></td>
-			
-			
-			</tr>
-			<tr>
-				<td style="font-weight: bold;">Birth Day</td>
-				<td><?= _d($student['birthday']) ?></td>
-			</tr>
-			<tr>
-				<td style="font-weight: bold;">Mobile</td>
+	<td style="font-weight: bold;">Mobile</td>
 				<td><?= (!empty($student['mobileno']) ? $student['mobileno'] : 'N/A'); ?></td>
+				
 			</tr>
 			<tr>
+				
+			<td style="font-weight: bold;">Batch</td>
+				<td><?= (!empty($student['batch']) ? $student['batch'] : 'N/A'); ?></td>
 				<td style="font-weight: bold;">Email</td>
 				<td><?= (!empty($student['email']) ? $student['email'] : 'N/A'); ?></td>
+				
 			</tr>
 			<tr>
-				<td style="font-weight: bold;">Address</td>
+				<td style="font-weight: bold;">Course</td>
+				<td><?= (!empty($student['subject_name']) ? $student['subject_name'] : 'N/A'); ?></td>
+<td style="font-weight: bold;">Address</td>
 				<td><?= (!empty($student['current_address']) ? $student['current_address'] : 'N/A'); ?></td>
 			</tr>
-			<tr>
-				<td style="font-weight: bold;">Subject</td>
-				<td><?= (!empty($student['class_name']) ? $student['class_name'] : 'N/A'); ?></td>
+				<tr>
+				<td style="font-weight: bold;">Admission Date</td>
+				<td><?= _d($student['admission_date']) ?></td>
+<td style="font-weight: bold;"></td>
+				<td></td>
 			</tr>
-			<tr>
-				<td style="font-weight: bold;">Batch</td>
-				<td><?= (!empty($student['batch']) ? $student['batch'] : 'N/A'); ?></td>
-			</tr>
+			
+			
 		</table>
 	</div>
 </div>
@@ -76,11 +89,7 @@ if (empty($student['previous_details'])) {
 			<div class="panel panel-accordion">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-                        <div class="auth-pan">
-                            <button class="btn btn-default btn-circle" id="authentication_btn">
-                                <i class="fas fa-unlock-alt"></i> <?=translate('authentication')?>
-                            </button>
-                        </div> 
+                        
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#profile">
 							<i class="fas fa-user-edit"></i> <?=translate('basic_details')?>
 						</a>
@@ -517,7 +526,7 @@ Offline/Online * <span class="required">*</span></label>
 
 						<!-- previous school details -->
 						<div class="headers-line">
-							<i class="fas fa-bezier-curve"></i> <?=translate('previous_school_details')?>
+							<i class="fas fa-bezier-curve"></i> <?=translate('previous_college_details')?>
 						</div>
 						<div class="row">
 								<div class="col-md-4 mb-sm">

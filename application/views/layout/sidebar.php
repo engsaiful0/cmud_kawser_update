@@ -661,7 +661,7 @@
                                                                 $sub_page == 'sections/edit'
                                                             ) echo 'nav-active'; ?>">
                                                     <a href="<?= get_permission('classes', 'is_view') ? base_url('classes') : base_url('sections'); ?>">
-                                                        <span>control Batch</span>
+                                                        <span>Control Batch</span>
                                                     </a>
                                                 </li>
                                             <?php } ?>
@@ -691,7 +691,7 @@
                                             <?php if (get_permission('subject', 'is_view')) { ?>
                                                 <li class="<?php if ($sub_page == 'subject/index' || $sub_page == 'subject/edit') echo 'nav-active'; ?>">
                                                     <a href="<?= base_url('subject/index') ?>">
-                                                        <span><?= translate('course') ?></span>
+                                                        <span><?= translate('control_course') ?></span>
                                                     </a>
                                                 </li>
                                             <?php }

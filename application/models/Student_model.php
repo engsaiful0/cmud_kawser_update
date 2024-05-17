@@ -521,9 +521,10 @@ class Student_model extends MY_Model
 
     public function getSingleStudent($id = '')
     {
-        $this->db->select('s.*,l.username,l.active,e.class_id,e.section_id,e.id as enrollid,e.roll,e.branch_id,e.session_id,c.name as class_name,se.name as section_name,sc.name as category_name');
+        $this->db->select('s.*,l.username,sub.name as subject_name,l.active,e.class_id,e.section_id,e.id as enrollid,e.roll,e.branch_id,e.session_id,c.name as class_name,se.name as section_name,sc.name as category_name');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 'e.student_id = s.id', 'left');
+        $this->db->join('subject as sub', 'sub.id = s.subject_id', 'inner');
         $this->db->join('login_credential as l', 'l.user_id = s.id and l.role = 7', 'inner');
         $this->db->join('class as c', 'e.class_id = c.id', 'left');
         $this->db->join('section as se', 'e.section_id = se.id', 'left');

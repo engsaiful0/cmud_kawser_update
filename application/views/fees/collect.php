@@ -410,12 +410,13 @@ if ($extINTL == true) {
 							console.log('feeAmount', feeAmount);
 							console.log('discount_amount', discount_amount);
 							var payable = Number(feeAmount) - Number(discount_amount);
-							if (discount_amount < amount) {
+							if (discount_amount < feeAmount) {
 								document.getElementById('payable').value = payable;
-							} else if (Number(discount_amount) >= Number(amount)) {
+							} else if (Number(discount_amount) >= Number(feeAmount)) {
 								alert("Discount must be less than the amount");
 								document.getElementById('discount_amount').value = '';
 							}
+							payable_amount(payable);
 						}
 					</script>
 					<div class="form-group">
@@ -468,7 +469,7 @@ if ($extINTL == true) {
 						<label class="col-md-3 control-label"><?= translate('remarks') ?></label>
 						<div class="col-md-6 mb-md">
 							<textarea name="remarks" rows="2" class="form-control" placeholder="<?= translate('write_your_remarks') ?>"></textarea>
-							<div class="checkbox-replace mt-lg">
+							<div style="display:none;" class="checkbox-replace mt-lg">
 								<label class="i-checks">
 									<input type="checkbox" name="guardian_sms" checked> <i></i>Confirmation Sms
 								</label>
@@ -558,7 +559,7 @@ if ($extINTL == true) {
 						<label class="col-md-3 control-label"><?= translate('remarks') ?></label>
 						<div class="col-md-6 mb-md">
 							<textarea name="remarks" rows="2" class="form-control" placeholder="<?= translate('write_your_remarks') ?>"></textarea>
-							<div class="checkbox-replace mt-lg">
+							<div style="display:none;" class="checkbox-replace mt-lg">
 								<label class="i-checks">
 									<input type="checkbox" name="guardian_sms" checked> <i></i>Confirmation Sms
 								</label>

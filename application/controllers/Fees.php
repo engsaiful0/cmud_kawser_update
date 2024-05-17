@@ -1,15 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * @package : Ramom school management system
- * @version : 5.0
- * @developed by : RamomCoder
- * @support : ramomcoder@yahoo.com
- * @author url : http://codecanyon.net/user/RamomCoder
- * @filename : Fees.php
- * @copyright : Reserved RamomCoder Team
- */
+
 
 class Fees extends Admin_Controller
 {
@@ -605,7 +597,7 @@ class Fees extends Admin_Controller
         if ($this->form_validation->run() !== false) {
             $feesType = explode("|", $this->input->post('fees_type'));
             $amount = $this->input->post('amount');
-
+ $payable = $this->input->post('payable');
             $fineAmount = $this->input->post('fine_amount');
             $discountAmount = $this->input->post('discount_amount') ? $this->input->post('discount_amount') : 0;
             $date = $this->input->post('date');
@@ -618,6 +610,8 @@ class Fees extends Admin_Controller
                 'branch_id' => $branchID,
                 'collect_by' => get_loggedin_user_id(),
                 'amount' => ($amount - $discountAmount),
+                'main_amount' => $amount,
+                'payable' => $payable,
                 'session_id' => get_session_id(),
                 'discount' => $discountAmount,
                 'fine' => $fineAmount,

@@ -116,25 +116,9 @@
 							<td><?php echo $row['is_online_offline'];?></td>
 							<td><?php echo $row['roll'];?></td>
 							<td><?php echo $row['subject_name'];?></td>
-							<td>
-							<?php
-								if(!empty($row['birthday'])){
-									$birthday = new DateTime($row['birthday']);
-									$today = new DateTime('today');
-									$age = $birthday->diff($today)->y;
-									echo html_escape($age);
-								}else{
-									echo "N/A";
-								}
-							?>
-							</td>
 							
-						<?php
-						if (count($show_custom_fields)) {
-							foreach ($show_custom_fields as $fields) {
-						?>
-							<td><?php echo get_table_custom_field_value($fields['id'], $row['id']);?></td>
-						<?php } } ?>
+							
+						
 							<td>
 								<div class="progress progress-xl m-none prb-mw">
 									<div class="progress-bar text-dark" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <?=$fee_progress?>%;"><?=$fee_progress?>%</div>
@@ -283,3 +267,6 @@
 	});
 </script>
 <?php endif; ?>
+ <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/autocomplete_js.js"></script>

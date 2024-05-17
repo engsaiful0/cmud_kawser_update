@@ -81,8 +81,8 @@ $currency_symbol = $global_config['currency_symbol'];
 							<tr>
 								<th><?=translate('sl')?></th>
 								<th><?=translate('student')?></th>
-								<th><?=translate('register_no')?></th>
-								<!-- <th><?=translate('roll')?></th> -->
+							
+								<th><?=translate('student_id')?></th> 
 								<th><?=translate('date')?></th>
 								<th><?=translate('Batch')?></th>
 								<th><?=translate('collect_by')?></th>
@@ -90,7 +90,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<!-- <th><?=translate('fees_type')?></th> -->
 								<th><?=translate('amount')?></th>
 								<th><?=translate('discount')?></th>
-								<th><?=translate('fine')?></th>
+								
 								<th><?=translate('total')?></th>
 							</tr>
 						</thead>
@@ -111,8 +111,8 @@ $currency_symbol = $global_config['currency_symbol'];
 							<tr>
 								<td><?php echo $count++; ?></td>
 								<td><?php echo $row['first_name'] . ' ' . $row['last_name'];?></td>
-								<td><?php echo $row['register_no'];?></td>
-								<!-- <td><?php echo $row['roll'];?></td> -->
+								<td><?php echo $row['roll'];?></td>
+								
 								<td><?php echo _d($row['date']);?></td>
 								<td><?php echo $row['class_name'];?></td>
 								<td><?php 
@@ -125,7 +125,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<!-- <td><?php echo $row['type_name'];?></td> -->
 								<td><?php echo $currency_symbol . $row['amount'];?></td>
 								<td><?php echo $currency_symbol . $row['discount'];?></td>
-								<td><?php echo $currency_symbol . $row['fine'];?></td>
+								
 								<td><?php echo $currency_symbol . number_format($totalp, 2, '.', '');?></td>
 						
 							</tr>
@@ -144,7 +144,7 @@ $currency_symbol = $global_config['currency_symbol'];
 								<th></th>
 								<th><?php echo ($currency_symbol . number_format($totalamount, 2, '.', '')); ?></th>
 								<th><?php echo ($currency_symbol . number_format($totaldiscount, 2, '.', '')); ?></th>
-								<th><?php echo ($currency_symbol . number_format($totalfine, 2, '.', '')); ?></th>
+							
 								<th><?php echo ($currency_symbol . number_format($total, 2, '.', '')); ?></th>
 							</tr>
 						</tfoot>

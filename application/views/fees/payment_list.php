@@ -64,16 +64,7 @@ $currency_symbol = $global_config['currency_symbol'];
                             ?>
                         </div>
                     </div>
-                    <div style="display: none;" class="col-md-<?php echo $widget; ?> mb-sm">
-                        <div class="form-group">
-                            <label class="control-label"><?= translate('section') ?> <span class="required">*</span></label>
-                            <?php
-                            $arraySection = $this->app_lib->getSections(set_value('class_id'), true);
-                            echo form_dropdown("section_id", $arraySection, set_value('section_id'), "class='form-control' id='section_id' required
-								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
-                            ?>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             <footer class="panel-footer">
@@ -105,7 +96,7 @@ $currency_symbol = $global_config['currency_symbol'];
                                     <th id="cell-qty" class="text-weight-semibold"><?= translate('method') ?></th>
                                     <th id="cell-price" class="text-weight-semibold"><?= translate('amount') ?></th>
                                     <th id="cell-price" class="text-weight-semibold"><?= translate('discount') ?></th>
-                                    <th id="cell-price" class="text-weight-semibold"><?= translate('fine') ?></th>
+                                  
                                     <th id="cell-price" class="text-weight-semibold"><?= translate('paid') ?></th>
                                     <th id="cell-price" class="text-weight-semibold"><?= translate('action') ?></th>
                                 </tr>
@@ -127,7 +118,7 @@ $currency_symbol = $global_config['currency_symbol'];
                                         <td><?php echo $payment_type->name; ?></td>
                                         <td><?php echo $currency_symbol . ($row['amount'] + $row['discount']); ?></td>
                                         <td><?php echo $currency_symbol . $row['discount']; ?></td>
-                                        <td><?php echo $currency_symbol . $row['fine']; ?></td>
+                               
                                         <td><?php echo $currency_symbol . $row['amount']; ?></td>
                                         <td>
 

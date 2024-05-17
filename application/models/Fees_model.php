@@ -151,13 +151,16 @@ class Fees_model extends MY_Model
         //die('student_id='.$student_id);
         $this->db->select('h.*,s.first_name as student_name');
         $this->db->from('fee_payment_history as h');
-        if ($student_id != '') {
-            $this->db->where('h.student_id', $student_id);
-        } elseif ($branch_id != '') {
-            $this->db->where('h.branch_id', $branch_id);
+         if ($class_id != '' && $student_id == '') {
+            $this->db->where('s.class_id', $class_id);
         }
+        else if ($student_id != '') {
+            $this->db->where('h.student_id', $student_id);
+        } elseif ($branch_id != '' && $class_id == '' && $student_id == '') {
+            $this->db->where('h.branch_id', $branch_id);
+        } 
         $this->db->join('student as s', 's.id = h.student_id');
-        $this->db->order_by('id', 'desc');
+        $this->db->order_by('h.id', 'desc');
         return $this->db->get()->result_array();
     }
 
@@ -296,7 +299,7 @@ class Fees_model extends MY_Model
 
     public function getStuPaymentHistory($classID = '', $SectionID = '', $paymentVia = '', $start = '', $end = '', $branchID = '', $onlyFine = false)
     {
-        $this->db->select('h.*,s.id as student_id,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,pt.name as pay_via');
+        $this->db->select('h.*,s.id as student_id,s.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,pt.name as pay_via');
         $this->db->from('fee_payment_history as h');
 
         $this->db->join('student as s', 's.id = h.student_id', 'left');
